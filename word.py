@@ -1,0 +1,33 @@
+import keyboard
+import time
+from PIL import ImageGrab
+from aip import AipOcr
+
+""" 你的 APPID AK SK """
+APP_ID = '15537111'
+API_KEY = 'sGwVtD61Qr0K3p6iTdL1FgGj'
+SECRET_KEY = 'VFjq6GG6bNVBDSbYcb7008iRKds5Bpar'
+
+client = AipOcr(APP_ID, API_KEY, SECRET_KEY)
+
+while 1:
+    keyboard.wait(hotkey='f1')
+    keyboard.wait(hotkey='ctrl+c')
+
+    time.sleep(0.1)
+
+    image = ImageGrab.grabclipboard()
+    image.save('screen.jpg')
+
+    """ 读取图片 """
+    def get_file_content(filePath):
+        with open(filePath, 'rb') as fp:
+            return fp.read()
+
+    image = get_file_content('screen.jpg')
+
+    """ 调用通用文字识别（高精度版） """
+    text = client.basicAccurate(image)
+    result = text['words_result']
+    for i in result:
+        print (i['words'])
