@@ -10,24 +10,15 @@ SECRET_KEY = 'VFjq6GG6bNVBDSbYcb7008iRKds5Bpar'
 
 client = AipOcr(APP_ID, API_KEY, SECRET_KEY)
 
-while 1:
-    keyboard.wait(hotkey='f1')
-    keyboard.wait(hotkey='ctrl+c')
+""" 读取图片 """
+def get_file_content(filePath):
+    with open(filePath, 'rb') as fp:
+        return fp.read()
 
-    time.sleep(0.1)
+image = get_file_content('screen.png')
 
-    image = ImageGrab.grabclipboard()
-    image.save('screen.jpg')
-
-    """ 读取图片 """
-    def get_file_content(filePath):
-        with open(filePath, 'rb') as fp:
-            return fp.read()
-
-    image = get_file_content('screen.jpg')
-
-    """ 调用通用文字识别（高精度版） """
-    text = client.basicAccurate(image)
-    result = text['words_result']
-    for i in result:
-        print (i['words'])
+""" 调用通用文字识别（高精度版） """
+text = client.basicAccurate(image)
+result = text['words_result']
+for i in result:
+    print(i['words'])
